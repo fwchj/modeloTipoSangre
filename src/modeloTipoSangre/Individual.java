@@ -3,6 +3,7 @@ package modeloTipoSangre;
 import java.util.ArrayList;
 
 import repast.simphony.context.Context;
+import repast.simphony.engine.environment.RunEnvironment;
 import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.ContextUtils;
@@ -12,17 +13,19 @@ public class Individual {
 	String gene1;
 	String gene2;
 	String tipoSangre;
+	int tickNacimiento;
 	
 	public Individual(String g1, String g2) {
 		this.gene1 = g1;
 		this.gene2 = g2;
-		
+		this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		defineBloodType();
 	}
 
 	public Individual(String tipoSangre) {
 		this.tipoSangre = tipoSangre;
-		
+		this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+
 		// Generar una variable aleatoria para los casos no deterministicos
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		if(this.tipoSangre=="A") {
@@ -60,19 +63,33 @@ public class Individual {
 		ArrayList<Individual> candidatos = new ArrayList<Individual>();
 		
 		for(Object o: miContexto.getObjects(Individual.class)) {
-			if(o!=this) {
+			Individual i = (Individual)o; // funciona porque limitamos arriba a Individual.class
+			if(i!=this && this.tickNacimiento==i.tickNacimiento) {
 				candidatos.add((Individual) o);
 			}
+			
 		}
+		System.out.printf("Tengo %s candidatos\n",candidatos.size());
 		
-		//Ahora el array list contiene todos los individuos (menos el this)
-		Individual pareja = candidatos.get(0);
+		if(candidatos.size()>0) {
+			//Ahora el array list contiene todos los individuos (menos el this)
+			Individual pareja = candidatos.get(0);
 		
-		// Ahora generamos los nuevos individuos
-		Individual child1 = new Individual(this.getOneGene(),pareja.getOneGene());
-		Individual child2 = new Individual(this.getOneGene(),pareja.getOneGene());
-		
-		
+			// Ahora generamos los nuevos individuos
+			Individual child1 = new Individual(this.getOneGene(),pareja.getOneGene());
+			Individual child2 = new Individual(this.getOneGene(),pareja.getOneGene());
+			
+			// Quitamos a los papas
+			miContexto.remove(this);
+			miContexto.remove(pareja);
+			
+			// Agregamos a los hijos/hijas
+			miContexto.add(child1);
+			miContexto.add(child2);
+		}
+		else {
+			miContexto.remove(this); // aqui quitamos el agente que sobra... 
+		}
 		
 	}
 	
@@ -111,6 +128,28 @@ public class Individual {
 	public String getTipoSangre() {
 		return this.tipoSangre;
 	}
+	
+	// Metodo que regresa 1 si el agente tiene tipo A, y 0 en los demas casos
+	public int getTypeA() {
+		if(this.tipoSangre=="A") {
+			return 1;
+		}
+		else {
+			return 0;
+		}
+	}
+	
+	public int getTypeB() {
+		return (this.tipoSangre=="B") ? 1 : 0;
+	}
+	public int getTypeAB() {
+		return (this.tipoSangre=="AB") ? 1 : 0;
+	}
+	public int getTypeO() {
+		return (this.tipoSangre=="O") ? 1 : 0;
+	}
+	
+	
 
 	
 	

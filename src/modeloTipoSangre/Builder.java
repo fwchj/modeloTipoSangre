@@ -34,7 +34,15 @@ public class Builder implements ContextBuilder<Object>{
 			double propA = params.getDouble("propA");
 			double propAB = params.getDouble("propAB");
 			double propB = params.getDouble("propB");
-		
+			double propO = params.getDouble("propO");
+			
+			// Normalizamos las probabilidades a que sumen a 1.0
+			propA = propA / (propA+propB+propAB+propO);
+			propAB = propAB / (propA+propB+propAB+propO);
+			propB = propB / (propA+propB+propAB+propO);
+			propO = propO / (propA+propB+propAB+propO);
+			
+		// Ahora agreamos los agentes al modelo
 		for(int i=0;i<numeroAgentes;i++) {
 			double r = RandomHelper.nextDoubleFromTo(0,1);
 			if(r<propA) {
