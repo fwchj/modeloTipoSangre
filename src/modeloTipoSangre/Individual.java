@@ -8,17 +8,28 @@ import repast.simphony.engine.schedule.ScheduledMethod;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.util.ContextUtils;
 
+/**
+ * Esta clase se refiere a seres humanos que viven por un tick.
+ * @author Florian Chavez
+ *
+ */
 public class Individual {
 	
 	String gene1;
 	String gene2;
+	/**El tipo de sangre usando una letra O (no zero) para el tipo O */
 	String tipoSangre;
 	int tickNacimiento;
 	
+	/**
+	 * Constructor de un individuo cuando resulta de la interaccion de dos agentes (No en el initialiser)
+	 * @param g1 Gene 1 (en string)
+	 * @param g2 Gene 2 (en string)
+	 */
 	public Individual(String g1, String g2) {
 		this.gene1 = g1;
 		this.gene2 = g2;
-		this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		//this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		defineBloodType();
 	}
 
@@ -93,6 +104,10 @@ public class Individual {
 		
 	}
 	
+	/**
+	 * Metodo para elegir aleatoriamente el gene que se transmite
+	 * @return Gene
+	 */
 	protected String getOneGene(){
 		double r = RandomHelper.nextDoubleFromTo(0, 1);
 		if(r<0.5) {
