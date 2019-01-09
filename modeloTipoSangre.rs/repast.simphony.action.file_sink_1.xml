@@ -1,0 +1,15 @@
+<repast.simphony.data2.engine.FileSinkDescriptor simphonyVersion="2.5.0">
+  <name>BaseDeDatos</name>
+  <dataSet>Poblacion</dataSet>
+  <delimiter>,</delimiter>
+  <format>TABULAR</format>
+  <sourceIds class="linked-hash-set">
+    <string>tick</string>
+    <string>tipoA</string>
+    <string>tipoAB</string>
+    <string>tipoB</string>
+    <string>tipoO</string>
+  </sourceIds>
+  <fileName>MisDatos.txt</fileName>
+  <addTimeStamp>true</addTimeStamp>
+</repast.simphony.data2.engine.FileSinkDescriptor>

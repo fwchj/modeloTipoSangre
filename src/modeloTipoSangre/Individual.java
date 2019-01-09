@@ -29,7 +29,7 @@ public class Individual {
 	public Individual(String g1, String g2) {
 		this.gene1 = g1;
 		this.gene2 = g2;
-		//this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
+		this.tickNacimiento = (int) RunEnvironment.getInstance().getCurrentSchedule().getTickCount();
 		defineBloodType();
 	}
 
@@ -80,7 +80,9 @@ public class Individual {
 			}
 			
 		}
-		System.out.printf("Tengo %s candidatos\n",candidatos.size());
+		if(!RunEnvironment.getInstance().isBatch()) {
+			System.out.printf("Tengo %s candidatos\n",candidatos.size());
+		}
 		
 		if(candidatos.size()>0) {
 			//Ahora el array list contiene todos los individuos (menos el this)

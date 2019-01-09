@@ -5,6 +5,7 @@ import repast.simphony.context.space.continuous.ContinuousSpaceFactory;
 import repast.simphony.context.space.continuous.ContinuousSpaceFactoryFinder;
 import repast.simphony.dataLoader.ContextBuilder;
 import repast.simphony.engine.environment.RunEnvironment;
+import repast.simphony.engine.environment.RunState;
 import repast.simphony.parameter.Parameters;
 import repast.simphony.random.RandomHelper;
 import repast.simphony.space.continuous.ContinuousSpace;
@@ -61,7 +62,10 @@ public class Builder implements ContextBuilder<Object>{
 		}
 		
 		
-		
+		if(RunEnvironment.getInstance().isBatch()) {
+			RunEnvironment.getInstance().endAt(100);
+			System.out.printf("Inicio del run %s\n",RunState.getInstance().getRunInfo().getRunNumber());
+		}
 		
 		
 		
